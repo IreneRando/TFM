@@ -6,30 +6,67 @@ import Home from './Pages/Home';
 import Profile from './Pages/Profile';
 import Tasks from './Pages/Tasks';
 import Traking from './Pages/Traking';
+import Landing from './Pages/Landing';
 import Navbar from "./Components/Navbar";
 import ProtectedRoute from "./Components/ProtectedRoute";
-import { AuthProvider } from "./Context/Context";
+import { AuthContext, AuthProvider } from "./Context/Context";
+import { useContext } from "react";
 
+const Layout = ({ children }) => {
+  const { user } = useContext(AuthContext);
+  return (
+    <>
+      {user && <Navbar />}
+      {children}
+    </>
+  );
+};
 
 function App() {
     return (
         <AuthProvider>
-            <BrowserRouter>
-                <Navbar />
-                <Routes>
-                    <Route path="/" element={<h1>Inicio</h1>} />
-                    <Route path="/login" element={<Login />} />
-                    <Route path="/calendar" element={<Calendar />} />
-                    <Route path="/chat" element={<Chat />} />
-                    <Route path="/profile" element={
-                        <ProtectedRoute>
-                            <Profile />
-                        </ProtectedRoute>} />
-                    <Route path="/tasks" element={<Tasks />} />
-                    <Route path="/traking" element={<Traking />} />
-                </Routes>
-            </BrowserRouter>
-        </AuthProvider>
+      <BrowserRouter>
+        <Routes>
+
+          {/* Sin Navbar */}
+          <Route path="/" element={<Landing />} />
+          <Route path="/login" element={<Login />} />
+
+          {/* Con Navbar y sesión iniciada */}
+          <Route path="/home" element={
+            <ProtectedRoute>
+              <Layout><Home /></Layout>
+            </ProtectedRoute>
+          } />
+          <Route path="/calendar" element={
+            <ProtectedRoute>
+              <Layout><Calendar /></Layout>
+            </ProtectedRoute>
+          } />
+          <Route path="/chat" element={
+            <ProtectedRoute>
+              <Layout><Chat /></Layout>
+            </ProtectedRoute>
+          } />
+          <Route path="/profile" element={
+            <ProtectedRoute>
+              <Layout><Profile /></Layout>
+            </ProtectedRoute>
+          } />
+          <Route path="/tasks" element={
+            <ProtectedRoute>
+              <Layout><Tasks /></Layout>
+            </ProtectedRoute>
+          } />
+          <Route path="/traking" element={
+            <ProtectedRoute>
+              <Layout><Traking /></Layout>
+            </ProtectedRoute>
+          } />
+
+        </Routes>
+      </BrowserRouter>
+    </AuthProvider>
     )
 }
 

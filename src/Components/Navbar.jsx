@@ -7,11 +7,11 @@ const Navbar = () => {
 
     return (
         <nav>
-            <Link to="/">Inicio</Link>
+            <Link to="/home">Inicio</Link>
             <Link to="/tasks">Tareas</Link>
-            <Link to="/calendar">Calendario</Link>
+            {/* <Link to="/calendar">Calendario</Link> */}
             <Link to="/traking">Seguimiento Paciente</Link>
-            <Link to="/chat">Chat</Link>
+            {/* <Link to="/chat">Chat</Link> */}
             <Link to="/profile">Perfil</Link>
             {!user && <Link to="/login">Login</Link>}
             {user && (
