@@ -7,14 +7,17 @@ import Profile from './Pages/Profile';
 import Tasks from './Pages/Tasks';
 import Traking from './Pages/Traking';
 import Navbar from "./Components/Navbar";
+import ProtectedRoute from "./Components/ProtectedRoute";
+import { AuthProvider } from "./Context/Context";
 
 
 function App() {
     return (
-        <Navbar>
+        <AuthProvider>
             <BrowserRouter>
+                <Navbar />
                 <Routes>
-                    <Route path="/" element={<Home />} />
+                    <Route path="/" element={<h1>Inicio</h1>} />
                     <Route path="/login" element={<Login />} />
                     <Route path="/calendar" element={<Calendar />} />
                     <Route path="/chat" element={<Chat />} />
@@ -26,8 +29,10 @@ function App() {
                     <Route path="/traking" element={<Traking />} />
                 </Routes>
             </BrowserRouter>
-        </Navbar>
+        </AuthProvider>
     )
 }
 
 export default App;
+
+

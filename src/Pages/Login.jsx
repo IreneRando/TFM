@@ -1,25 +1,31 @@
 import { useContext, useState } from "react";
-import { useNavigate, useLocation, replace } from "react-router-dom";
-import { AuthContext } from "../Context/AuthContext"
+import { useNavigate, useLocation } from "react-router-dom";
+import { AuthContext } from "../Context/Context"
 import { fetchUsers } from "../API/api"
+import { useEffect } from "react";
+import './Login.css';
+import '../App.css';
+
 
 const Login = () => {
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
     const [error, setError] = useState('')
-    const { Login } = useContext(AuthContext)
-    const navigate = useNavigate
-    const location = useLocation()
+    const { login } = useContext(AuthContext);
+    const navigate = useNavigate();
+    const location = useLocation();
     const from = location.state?.from?.pathname || '/profile'
 
-
+useEffect(() => {
+  console.log("Componente Login montado");
+}, []);
     const handleLogin = async (e) => {
         e.preventDefault()
         try {
             const users = await fetchUsers()
             const user = users.find(u => u.email === email && password === u.password)
             if (user) {
-                Login(user)
+                login(user)
                 navigate(from, { replace: true })
             } else {
                 setError('Credenciales incorrectas')
@@ -30,23 +36,25 @@ const Login = () => {
         }
 
     }
+    
+
     return (
-        <div style={{ textAlign: 'center', marginTop: '5rem' }}>
+        <div className="container-form">
             <h2>Iniciar sesión</h2>
-            <form onSubmit={handleLogin}>
+            <form onSubmit={handleLogin} style={{display:'flex', flexDirection:'column', alignItems:'center', gap:'5px'}}>
                 <input
                     type="email"
                     placeholder="Correo electrónico"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
-                /><br />
+                />
                 <input
                     type="password"
                     placeholder="Contraseña"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                 /><br />
-                <button type="submit">Entrar</button>
+                <button type="submit">Iniciar sesión</button>
             </form>
             {error && <p style={{ color: 'red' }}>{error}</p>}
         </div>
