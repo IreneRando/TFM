@@ -60,9 +60,10 @@ function SortableTarea({ tarea }) {
 
 export default function GestorTareas() {
   const [tareas, setTareas] = useState([
-    { id: "1", titulo: "Comprar leche", estado: "pendiente", fecha: "2025-06-10" },
-    { id: "2", titulo: "Hacer reporte", estado: "en proceso", fecha: "2025-06-12" },
-    { id: "3", titulo: "Llamar a Juan", estado: "hecha", fecha: "2025-06-09" },
+    { id: "1", titulo: "Dar desayuno", estado: "hecho", fecha: "2025-06-10" },
+    { id: "2", titulo: "Duchar", estado: "en proceso", fecha: "2025-06-12" },
+    { id: "3", titulo: "Cita médica (Radiólogo) ", estado: "pendiente", fecha: "2025-06-10" },
+    { id: "4", titulo: "Recoger primera orina del día", estado: "hecho", fecha: "2025-06-10" },
   ]);
 
   const [showForm, setShowForm] = useState(false);
