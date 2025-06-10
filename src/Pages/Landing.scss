@@ -1,21 +1,29 @@
 @import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400..700&display=swap');
 
+.container-header{
+    padding: 40px;
+}
+
 .name{
     font-family: 'Dancing Script', cursive ;
     font-size: 55px;
     color: var(--color-primario);
     font-weight: 500;
+    padding-left:40px;
+    padding-top:30px;
 }
 
 .tittle{
     font-size: 24px;
     font-weight: 400;
+    margin-bottom: 15px;
 }
 
 .subtittle{
     font-size: 16px;
     width: 650px;
     font-weight: 400;
+    margin-bottom: 40px;
 }
 
 .container-p{

@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import './Tasks.scss'
 import {
   DndContext,
   closestCenter,
@@ -107,10 +108,11 @@ export default function GestorTareas() {
   return (
     <div style={{ padding: 20 }}>
       <h2>Gestor de Tareas</h2>
-      <button onClick={() => setShowForm(true)}>Añadir tarea</button>
+      <button style={{width:'100px'}} onClick={() => setShowForm(true)}>+ Tarea</button>
 
       {showForm && (
-        <form onSubmit={agregarTarea} style={{ marginTop: 10 }}>
+        <form onSubmit={agregarTarea} className="container-form2">
+          <h4>Añadir tarea</h4>
           <input
             type="text"
             placeholder="Título"
@@ -118,6 +120,7 @@ export default function GestorTareas() {
             onChange={(e) => setNuevoTitulo(e.target.value)}
             required
           />
+          <div style={{display: "flex", gap:'20px'}}>
           <input
             type="date"
             value={nuevaFecha}
@@ -127,6 +130,7 @@ export default function GestorTareas() {
           <select
             value={nuevoEstado}
             onChange={(e) => setNuevoEstado(e.target.value)}
+            style={{width:'150px'}}
           >
             {ESTADOS.map((estado) => (
               <option key={estado} value={estado}>
@@ -134,14 +138,17 @@ export default function GestorTareas() {
               </option>
             ))}
           </select>
-          <button type="submit">Crear</button>
-          <button type="button" onClick={() => setShowForm(false)}>
+          </div>
+          <div className="container-buttons">
+          <button style={{width:'100px'}} type="submit">Crear</button>
+          <button style={{width:'100px'}} type="button" onClick={() => setShowForm(false)}>
             Cancelar
           </button>
+          </div>
         </form>
       )}
 
-      <div style={{ display: "flex", justifyContent: "space-between", marginTop: 20 }}>
+      <div className="container-columns" style={{ display: "flex", justifyContent: "space-evenly", marginTop: 20 }}>
         <DndContext sensors={sensores} collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
           {ESTADOS.map((estado) => {
             const tareasPorEstado = tareas.filter((t) => t.estado === estado);
@@ -150,14 +157,16 @@ export default function GestorTareas() {
               <div
                 key={estado}
                 style={{
-                  width: "32%",
-                  background: "#f5f5f5",
-                  padding: 10,
+                  width: "30%",
+                  background: "transparent",
+                  boxShadow: "0 0 5px var(--color-primario)",
+                  padding: 15,
                   borderRadius: 6,
-                  minHeight: 200,
+                  minHeight: 400,
                 }}
               >
-                <h3 style={{ textTransform: "capitalize" }}>{estado}</h3>
+                <h3 style={{ textTransform: "capitalize", textAlign:"center"}}>{estado}</h3>
+                
                 <SortableContext
                   items={tareasPorEstado.map((t) => t.id)}
                   strategy={rectSortingStrategy}

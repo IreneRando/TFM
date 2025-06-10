@@ -6,11 +6,13 @@ const Landing = () => {
     return (
         <div>
             <h1 className="name">Ampara</h1>
+            <div className="container-header">
             <h2 className="tittle">Cuidar juntos es más fácil</h2>
             <h3 className="subtittle"> Una solución digital para organizar, coordinar y comunicar el cuidado de tus seres queridos de forma sencilla, clara y humana.</h3>
             <Link to="/login">
                 <button>Iniciar Sesión</button>
             </Link>
+            </div> 
             <div className="container-p">
             <p>Cuidar de una persona mayor o dependiente puede ser una tarea compleja, especialmente cuando se comparte entre varios familiares o cuidadores. CuidApp nace para ayudarte a coordinar todas esas tareas cotidianas que importan: desde administrar la medicación y planificar citas médicas, hasta registrar el estado de ánimo o comunicarte fácilmente con el resto del equipo de cuidado.
             </p>
