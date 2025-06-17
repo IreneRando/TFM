@@ -11,6 +11,7 @@ import Navbar from "./Components/Navbar";
 import ProtectedRoute from "./Components/ProtectedRoute";
 import { AuthContext, AuthProvider } from "./Context/Context";
 import { useContext } from "react";
+import { TaskProvider } from './Context/TaskContext';
 
 const Layout = ({ children }) => {
   const { user } = useContext(AuthContext);
@@ -25,6 +26,7 @@ const Layout = ({ children }) => {
 function App() {
     return (
         <AuthProvider>
+          <TaskProvider>
       <BrowserRouter>
         <Routes>
 
@@ -66,6 +68,7 @@ function App() {
 
         </Routes>
       </BrowserRouter>
+      </TaskProvider>
     </AuthProvider>
     )
 }

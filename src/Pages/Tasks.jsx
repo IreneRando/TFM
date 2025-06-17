@@ -1,185 +1,202 @@
-import React, { useState } from "react";
-import './Tasks.scss'
-import {
-  DndContext,
-  closestCenter,
-  PointerSensor,
-  useSensor,
-  useSensors,
-} from "@dnd-kit/core";
-import {
-  arrayMove,
-  SortableContext,
-  useSortable,
-  rectSortingStrategy,
-} from "@dnd-kit/sortable";
-import { CSS } from "@dnd-kit/utilities";
+import { useState, useContext, useEffect } from "react";
+import "./Tasks.scss"
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faClock, faCircleCheck, faPaste, faPen, faTrash } from '@fortawesome/free-solid-svg-icons'
+import { TaskContext } from '../Context/TaskContext';
+import { fetchTask, createTask, updateTask, deleteTaskById } from "../Services/supabaseService";
 
-const ESTADOS = ["pendiente", "en proceso", "hecha"];
+const estados = [
+  { nombre: "pendiente", icono: faPaste },
+  { nombre: "en proceso", icono: faClock },
+  { nombre: "hecha", icono: faCircleCheck },
+];
 
-function Tarea({ tarea, listeners, attributes, setNodeRef, style }) {
-  return (
-    <div
-      ref={setNodeRef}
-      {...listeners}
-      {...attributes}
-      style={{
-        ...style,
-        padding: 10,
-        marginBottom: 8,
-        border: "1px solid #ccc",
-        borderRadius: 4,
-        backgroundColor: "#fff",
-      }}
-    >
-      <strong>{tarea.titulo}</strong>
-      <br />
-      <small>Fecha: {tarea.fecha}</small>
-    </div>
-  );
-}
-
-function SortableTarea({ tarea }) {
-  const { attributes, listeners, setNodeRef, transform, transition } =
-    useSortable({ id: tarea.id });
-
-  const style = {
-    transform: CSS.Transform.toString(transform),
-    transition,
-  };
-
-  return (
-    <Tarea
-      tarea={tarea}
-      setNodeRef={setNodeRef}
-      listeners={listeners}
-      attributes={attributes}
-      style={style}
-    />
-  );
-}
-
-export default function GestorTareas() {
-  const [tareas, setTareas] = useState([
-    { id: "1", titulo: "Dar desayuno", estado: "hecho", fecha: "2025-06-10" },
-    { id: "2", titulo: "Duchar", estado: "en proceso", fecha: "2025-06-12" },
-    { id: "3", titulo: "Cita médica (Radiólogo) ", estado: "pendiente", fecha: "2025-06-10" },
-    { id: "4", titulo: "Recoger primera orina del día", estado: "hecho", fecha: "2025-06-10" },
-  ]);
-
+const TaskBoard = () => {
+  const { tasks, setTasks } = useContext(TaskContext);
   const [showForm, setShowForm] = useState(false);
-  const [nuevoTitulo, setNuevoTitulo] = useState("");
-  const [nuevoEstado, setNuevoEstado] = useState("pendiente");
-  const [nuevaFecha, setNuevaFecha] = useState("");
+  const [newTask, setNewTask] = useState({ titulo: "", fecha: "", estado: "pendiente" });
+  const [editingTaskId, setEditingTaskId] = useState(null);
 
-  const sensores = useSensors(useSensor(PointerSensor));
+  useEffect(() => {
+    const loadTasks = async () => {
+      const user = JSON.parse(localStorage.getItem('user'));
+      if (!user) return;
 
-  function agregarTarea(e) {
-    e.preventDefault();
-    const nueva = {
-      id: Date.now().toString(),
-      titulo: nuevoTitulo,
-      estado: nuevoEstado,
-      fecha: nuevaFecha,
+      try {
+        const tareas = await fetchTask(user.id);
+        setTasks(tareas);
+      } catch (error) {
+        console.error("Error al cargar tareas:", error.message);
+      }
     };
-    setTareas((t) => [...t, nueva]);
-    setNuevoTitulo("");
-    setNuevaFecha("");
-    setNuevoEstado("pendiente");
-    setShowForm(false);
+
+    loadTasks();
+  }, []);
+
+  const addTask = async (e) => {
+    e.preventDefault();
+    const user = JSON.parse(localStorage.getItem('user'));
+
+    try {
+      if (editingTaskId !== null) {
+        const updatedTask = await updateTask(editingTaskId, newTask)
+        setTasks((prev) =>
+          prev.map((task) =>
+            task.id === editingTaskId ? updatedTask : task
+          )
+        )
+      } else {
+        const taskToCreate = {
+          titulo: newTask.titulo,
+          fecha: newTask.fecha,
+          estado: newTask.estado.toLowerCase(),
+          asignado_a: user.id
+
+        };
+        const createdTask = await createTask(taskToCreate)
+        setTasks([...tasks, createdTask]);
+      }
+      setShowForm(false);
+      setNewTask({ titulo: "", fecha: "", estado: "pendiente" });
+      setEditingTaskId(null)
+      console.log(newTask)
+
+    } catch (error) {
+      console.error('Error al guardar la tarea:', error)
+    }
+  }
+  const editTask = (task) => {
+    setNewTask({ titulo: task.titulo, fecha: task.fecha, estado: task.estado })
+    setEditingTaskId(task.id)
+    setShowForm(true)
   }
 
-  const handleDragEnd = ({ active, over }) => {
-    if (!over) return;
-    const tareaActiva = tareas.find((t) => t.id === active.id);
-    const columnaOrigen = tareaActiva.estado;
-    const columnaDestino = tareas.find((t) => t.id === over.id)?.estado;
+  const deleteTask = async (id) => {
+    try {
+      await deleteTaskById(id)
+      setTasks((prev) => prev.filter((task) => task.id !== id))
+    } catch (error) {
+      console.error('Error al eliminar tarea:', error)
+    }
+  }
 
-    // Si se movió a otra columna
-    if (columnaDestino && columnaOrigen !== columnaDestino) {
-      setTareas((prev) =>
-        prev.map((t) =>
-          t.id === active.id ? { ...t, estado: columnaDestino } : t
+  const moveTask = async (id, direction) => {
+    const taskToUpdate = tasks.find(task => task.id === id)
+    if (!taskToUpdate) return
+    const currentIndex = estados.findIndex(e => e.nombre === taskToUpdate.estado);
+    const newIndex = currentIndex + direction;
+
+    if (newIndex < 0 || newIndex >= estados.length) return
+
+    const nuevoEstado = estados[newIndex].nombre.toLowerCase()
+
+    try {
+      await updateTask(id, { estado: nuevoEstado })
+      setTasks(prev =>
+        prev.map(task =>
+          task.id === id ? { ...task, estado: nuevoEstado } : task
         )
       );
+    } catch (error) {
+      console.error('Error al mover la tarea:', error.message);
+      alert('No se pudo mover la tarea.');
     }
-  };
+
+  }
 
   return (
-    <div style={{ padding: 20 }}>
-      <h2>Gestor de Tareas</h2>
-      <button style={{width:'100px'}} onClick={() => setShowForm(true)}>+ Tarea</button>
+    <div className="p-4">
+      <h2 className="mb-4">Gestor de Tareas</h2>
+      <button onClick={() => setShowForm(true)} className="button2">
+        + Tarea
+      </button>
 
       {showForm && (
-        <form onSubmit={agregarTarea} className="container-form2">
-          <h4>Añadir tarea</h4>
+        <form onSubmit={addTask} className="container-form2">
+          <h3 className="mb-2">Nueva Tarea</h3>
           <input
             type="text"
+            required
             placeholder="Título"
-            value={nuevoTitulo}
-            onChange={(e) => setNuevoTitulo(e.target.value)}
-            required
+            value={newTask.titulo}
+            onChange={(e) => setNewTask({ ...newTask, titulo: e.target.value })}
+            className="block border p-2 mb-2 w-full"
           />
-          <div style={{display: "flex", gap:'20px'}}>
-          <input
-            type="date"
-            value={nuevaFecha}
-            onChange={(e) => setNuevaFecha(e.target.value)}
-            required
-          />
-          <select
-            value={nuevoEstado}
-            onChange={(e) => setNuevoEstado(e.target.value)}
-            style={{width:'150px'}}
-          >
-            {ESTADOS.map((estado) => (
-              <option key={estado} value={estado}>
-                {estado}
-              </option>
-            ))}
-          </select>
+          <div style={{ display: 'flex', gap: '20px' }}>
+            <input
+              type="date"
+              required
+              value={newTask.fecha}
+              onChange={(e) => setNewTask({ ...newTask, fecha: e.target.value })}
+              className="block border p-2 mb-2 w-full"
+            />
+            <select
+              value={newTask.estado}
+              onChange={(e) => setNewTask({ ...newTask, estado: e.target.value })}
+              className="block border p-2 mb-2 w-full"
+              style={{ width: '170px' }}
+            >
+              {estados.map(({ nombre }) => (
+                <option key={nombre} value={nombre.toLowerCase()}>
+                  {nombre.charAt(0).toLowerCase() + nombre.slice(1)}
+                </option>
+              ))}
+            </select>
           </div>
           <div className="container-buttons">
-          <button style={{width:'100px'}} type="submit">Crear</button>
-          <button style={{width:'100px'}} type="button" onClick={() => setShowForm(false)}>
-            Cancelar
-          </button>
+            <button type="button" onClick={() => setShowForm(false)} className="button2">Cancelar</button>
+            <button type="submit" className="button2">Guardar</button>
           </div>
         </form>
       )}
 
-      <div className="container-columns" style={{ display: "flex", justifyContent: "space-evenly", marginTop: 20 }}>
-        <DndContext sensors={sensores} collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
-          {ESTADOS.map((estado) => {
-            const tareasPorEstado = tareas.filter((t) => t.estado === estado);
+      <div className="container-columns">
+        {estados.map(({ nombre, icono }) => {
+          const tareasEnColumna = tasks.filter((task) => task.estado === nombre);
 
-            return (
-              <div
-                key={estado}
-                style={{
-                  width: "30%",
-                  background: "transparent",
-                  boxShadow: "0 0 5px var(--color-primario)",
-                  padding: 15,
-                  borderRadius: 6,
-                  minHeight: 400,
-                }}
-              >
-                <h3 style={{ textTransform: "capitalize", textAlign:"center"}}>{estado}</h3>
-                
-                <SortableContext
-                  items={tareasPorEstado.map((t) => t.id)}
-                  strategy={rectSortingStrategy}
-                >
-                  {tareasPorEstado.map((tarea) => (
-                    <SortableTarea key={tarea.id} tarea={tarea} />
-                  ))}
-                </SortableContext>
+          return (
+            <div key={nombre} className="column">
+              <div className="header-column">
+                <FontAwesomeIcon icon={icono} className="estado-icon" />
+                <h2 className="tittle-estado">{nombre}</h2>
+                <p className="task-count">{tareasEnColumna.length}</p>
               </div>
-            );
-          })}
-        </DndContext>
+              {tareasEnColumna.map((task) => (
+                <div key={task.id} className="container-card">
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                    <div className="tittle">{task.titulo}</div>
+                    <div className="fecha">{task.fecha}</div>
+                  </div>
+                  <div className="container-buttons">
+                    <div className="card-actions">
+                      <FontAwesomeIcon icon={faPen} onClick={() => editTask(task)} className="action-icon" />
+                      <FontAwesomeIcon icon={faTrash} onClick={() => deleteTask(task.id)} className="action-icon-trash" />
+                    </div>
+                    <div className="container-arrows">
+                      <button
+                        disabled={estados.findIndex(e => e.nombre === task.estado) === 0}
+                        onClick={() => moveTask(task.id, -1)}
+                        className="button2"
+                      >
+                        ←
+                      </button>
+                      <button
+                        disabled={estados.findIndex(e => e.nombre === task.estado) === estados.length - 1}
+                        onClick={() => moveTask(task.id, 1)}
+                        className="button2"
+                      >
+                        →
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )
+        })}
       </div>
     </div>
   );
-}
+};
+
+export default TaskBoard;

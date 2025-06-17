@@ -4,7 +4,7 @@
     justify-content: space-between; 
     flex-direction: column;
     margin-top: 10;
-    gap: 15px;
+    gap: 20px;
     background-color: var(--color-fondo);
     padding: 30px;
     box-shadow: 0 0 5px var(--color-primario);
@@ -19,5 +19,112 @@
     display: flex;
     gap: 10px;
     justify-content: end;
-    margin-top: 30px;
+    margin-top: 10px;
+    
+}
+
+.button2{
+    width: 120px;
+    background-color: var(--color-secundario);
+}
+
+.container-columns{
+    display: flex;
+    justify-content: space-evenly;
+    gap: 20px;
+}
+
+.column{
+    text-align: center;
+    width: 30%;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    border-radius: 5px;
+    margin-top: 20px;
+    padding: 20px;
+}
+
+.header-column{
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    border-radius: 10px;
+    background-color: var(--color-primario);
+    min-height: 150px;
+    padding: 20px;
+}
+
+.estado-icon{
+    height: 40px;
+    color: var(--color-fondo);
+}
+
+.tittle-estado{
+    font-size: 28px;
+    color: var(--color-fondo);
+    margin: 0;
+}
+
+.task-count{
+    font-size: 35px;
+    color: var(--color-fondo);
+    font-weight: 600;
+    margin: 0;
+}
+
+.container-card{
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+    border-radius: 5px;
+    padding: 20px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    background-color: var(--color-fondo);
+    box-shadow: 3px 3px 8px var(--color-texto-secundario);
+}
+
+.tittle{
+    display: flex;
+    flex-wrap: wrap;
+    max-width: 280px;
+    color: var(--color-primario);
+}
+
+.fecha{
+    font-size: 18px;
+    font-weight: 400;
+    color: var(--color-primario);
+    margin-bottom: 10px;
+}
+
+.container-arrows{
+    width: 100%;
+    display: flex;
+    justify-content: right;
+    gap: 15px;
+}
+
+.container-arrows button{
+    width: 50px;
+    height: 30px;
+    margin: 0;
+    padding: 0;
+    padding-bottom: 5px;
+}
+
+.card-actions{
+    display: flex;
+    gap: 20px;
+    color: var(--color-primario);
+}
+
+.action-icon{
+    height: 20px;
+}
+
+.action-icon-trash{
+    height: 20px;
+    color: rgb(204, 11, 11);
 }
