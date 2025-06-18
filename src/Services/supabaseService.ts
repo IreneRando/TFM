@@ -106,3 +106,50 @@ export const deleteMedicationById = async (id) => {
 
   if(error) throw new Error ('Error al eliminar medicación')
 }
+
+//Obtener TODAS los seguimientos
+export const fetchTrackings = async (userId) => {
+  const {data, error} = await supabase
+  .from('seguimiento')
+  .select('*')
+  .eq('usuario_id', userId)
+  .order('fecha', {ascending:true})
+
+  if(error) throw new Error ('Error al obtener seguimientos')
+    return data
+}
+
+//Crear un seguimiento
+export const createTracking = async (tracking) => {
+  const {data, error} = await supabase
+  .from('seguimiento')
+  .insert([tracking])
+  .select()
+  .single()
+
+  if(error) throw new Error ('Error al crear seguimiento')
+    return data
+}
+
+//Editar un seguimiento
+export const updateTracking = async (id, newData) => {
+  const {data, error} = await supabase
+  .from('seguimiento')
+  .update(newData)
+  .eq('id', id)
+  .select()
+  .single()
+
+  if(error) throw new Error ('Error al editar seguimiento')
+    return data
+}
+
+//Eliminar un seguimiento
+export const deleteTrackingById = async (id) => {
+  const {error} = await supabase
+  .from('seguimiento')
+  .delete()
+  .eq('id', id)
+
+  if(error) throw new Error ('Error al eliminar seguimiento')
+}
