@@ -43,6 +43,7 @@ CREATE TABLE seguimiento (
     id SERIAL PRIMARY KEY,
     fecha DATE NOT NULL,
     estado_animo TEXT NOT NULL,
+    estado_fisico TEXT NOT NULL,
     notas TEXT,
     usuario_id INTEGER REFERENCES usuarios(id) ON DELETE CASCADE
 );
@@ -101,14 +102,4 @@ INSERT INTO medicacion (nombre, dosis, hora, dias, usuario_id) VALUES
 ('Aspirina', '100mg', '13:00:00', ARRAY['domingo'], 10);
 
 -- Seguimiento emocional
-INSERT INTO seguimiento (fecha, estado_animo, notas, usuario_id) VALUES
-('2025-06-09', 'triste', 'No quiso participar en actividades', 2),
-('2025-06-10', 'feliz', 'Buena interacción con el grupo', 1),
-('2025-06-11', 'neutro', 'Día normal, sin novedades', 4),
-('2025-06-11', 'triste', 'Dolor de cabeza persistente', 6),
-('2025-06-12', 'feliz', 'Jugó al dominó con los otros residentes', 5),
-('2025-06-12', 'neutro', 'Participó en ejercicios pero sin entusiasmo', 9),
-('2025-06-13', 'feliz', 'Disfrutó la música en vivo', 7),
-('2025-06-14', 'triste', 'Comentó sentirse solo', 3),
-('2025-06-14', 'neutro', 'Le dolía un poco la pierna izquierda', 8),
-('2025-06-15', 'feliz', 'Pintó un cuadro en la actividad artística', 10);
+INSERT INTO "public"."seguimiento" ("id", "fecha", "estado_animico", "estado_fisico", "horas_sueno", "presion_arterial", "peso", "usuario_id") VALUES ('1', '2025-06-11', 'feliz', 'sin molestias', '9', '120/80', '70.50', '2'), ('2', '2025-06-11', 'triste', 'dolor de cabeza', '6', '130/90', '68.00', '3'), ('3', '2025-06-11', 'neutral', 'ligeramente cansado', '7', '125/85', '75.20', '4'), ('4', '2025-06-11', 'enojado', 'dolor muscular', '5', '140/95', '80.00', '5');
