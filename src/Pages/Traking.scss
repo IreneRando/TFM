@@ -1,3 +1,7 @@
+.body{
+    margin-left: 184px;
+    margin-right: 184px;
+}
 
 .container-traking{
     display: flex;
@@ -9,10 +13,9 @@
     width: 50%;
     display: flex;
     flex-direction: column;
-    align-items: center;
-    justify-content: center;
     width: 100%;
     height: 100vh;
+    gap: 20px;
 }
 
 .historial-container{
@@ -25,3 +28,86 @@
     height: 100vh;
 }
 
+.date{
+    width: 250px;
+}
+
+.btn-estado-animo{
+    box-shadow: none;
+    width: 85px;;
+}
+
+.emoji{
+    width: 40px;
+    height: 40px;
+    color: var(--color-primario);
+}
+
+.emoji-selected{
+    color: var(--color-acento);
+}
+
+.btn-estado-fisico{
+    margin-right: 20px;
+    margin-bottom: 20px;
+    width: 150px;
+    box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.1);
+}
+
+.btn-estado-fisico-selected{
+    background-color: var(--color-acento);
+}
+
+.container-inputs{
+    width: 600px;
+    display: flex;
+    flex-direction: row;
+}
+
+.button-accordion{
+    width: 550px;
+    height: 50px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: white;
+    color: var(--color-primario);
+    box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.1);
+   
+}
+
+.button-accordion:hover{
+    color: white;
+}
+
+.container-card-acordion{
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    gap:40px;
+    padding: 25px;
+    padding-bottom: 0;
+}
+
+.container-items-card1{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.container-items-card2{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    
+}
+
+.container-buttons{
+    width: 100%;
+    display: flex;
+    justify-content: end;
+    margin-bottom: 20px;
+    padding-right: 20px;
+}

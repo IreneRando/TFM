@@ -105,7 +105,7 @@ const TaskBoard = () => {
   }
 
   return (
-    <div className="p-4">
+    <div className="body p-4">
       <h2 className="mb-4">Gestor de Tareas</h2>
       <button onClick={() => setShowForm(true)} className="button2">
         + Tarea

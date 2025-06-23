@@ -6,9 +6,10 @@
   --color-primario: #336B87;
   --color-secundario: #ab6fce;
   --color-acento: #8dbed6;
-  --color-fondo: #fafafa;
+  --color-fondo: #ececec;
   --color-texto: #272727;
   --color-texto-secundario: #929292;
+  --color-fondo-perfil: #cee3f04f;
 }
 
 body {
@@ -19,6 +20,7 @@ body {
   padding: 0;
   line-height: 1.6;
   height: 100vh;
+
 }
 
 nav {
@@ -50,7 +52,7 @@ nav span {
 }
 
 button {
-  width: 20%;
+  width: 225px;
   background-color: var(--color-primario);
   color: white;
   padding: 0.5rem 1.2rem;
@@ -59,7 +61,7 @@ button {
   cursor: pointer;
   font-weight: 600;
   transition: transform 0.2s ease, background-color 0.3s ease;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.203);
 }
 
 button:hover {

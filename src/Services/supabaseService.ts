@@ -153,3 +153,38 @@ export const deleteTrackingById = async (id) => {
 
   if(error) throw new Error ('Error al eliminar seguimiento')
 }
+
+//Obtener Usuarios
+export const fetchUsers = async () => {
+  const {data, error} = await supabase
+  .from('usuarios')
+  .select('*')
+
+  if(error) throw new Error ('Error al obtener usuarios')
+    return data
+}
+
+//Obtener un usuario por ID
+export const fetchUserById = async (id) => {
+  const {data, error} = await supabase
+  .from('usuarios')
+  .select('*')
+  .eq('id', id)
+  .single()
+
+  if(error) throw new Error ('Error al obtener usuario')
+    return data
+}
+
+//Editar un usuario
+export const updateUser = async (id, newData) => {
+  const {data, error} = await supabase
+  .from('usuarios')
+  .update(newData)
+  .eq('id', id)
+  .select()
+  .single()
+
+  if(error) throw new Error ('Error al editar usuario')
+    return data
+}

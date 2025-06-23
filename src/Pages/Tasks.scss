@@ -1,3 +1,8 @@
+.body{
+    margin-left: 184px;
+    margin-right: 184px;
+}
+
 .container-form2 {
     width: 600px; 
     display: flex;
@@ -48,7 +53,7 @@
 .header-column{
     display: flex;
     flex-direction: column;
-    gap: 20px;
+    gap: 12px;
     border-radius: 10px;
     background-color: var(--color-primario);
     min-height: 150px;
@@ -89,6 +94,7 @@
     display: flex;
     flex-wrap: wrap;
     max-width: 280px;
+    font-size: 10px;
     color: var(--color-primario);
 }
 

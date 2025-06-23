@@ -14,13 +14,13 @@ const Home = () => {
     const [editingMedicationId, setEditingMedicationId] = useState(null);
 
     const tiposMedicamento = [
-        { nombre: "Comprimido", icon: faCapsules },
-        { nombre: "Pastilla", icon: faTablets },
-        { nombre: "Gotas", icon: faDroplet },
-        { nombre: "Jarabe", icon: faSpoon },
-        { nombre: "Inyección", icon: faSyringe },
-        { nombre: "Crema", icon: faBottleDroplet },
-        { nombre: "Supositorio", icon: faBaby }
+        { nombre: "comprimido", icon: faCapsules },
+        { nombre: "pastilla", icon: faTablets },
+        { nombre: "gotas", icon: faDroplet },
+        { nombre: "jarabe", icon: faSpoon },
+        { nombre: "inyección", icon: faSyringe },
+        { nombre: "crema", icon: faBottleDroplet },
+        { nombre: "supositorio", icon: faBaby }
     ];
 
 
@@ -115,7 +115,7 @@ const Home = () => {
 
 
     return (
-        <div className="p-4">
+        <div className="body p-4">
             <section className="medication-section">
                 <h2>Medicación</h2>
                 <button onClick={() => setShowFormMed(true)} className="button2">+ Añadir</button>
@@ -179,7 +179,7 @@ const Home = () => {
 
                 <div className="med-cards">
                     {medications.map(med => {
-                        const tipoMed = tiposMedicamento.find(t => t.nombre === med.tipo);
+                        const tipoMed = tiposMedicamento.find(t => t.nombre.toLowerCase() === med.tipo);
                         return (
                             <div key={med.id} className="med-card">
                                 <h4>{med.nombre}</h4>
