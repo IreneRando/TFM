@@ -1,7 +1,7 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Login from './Pages/Login';
-import Calendar from './Pages/Calendar';
-import Chat from './Pages/Chat';
+// import Calendar from './Pages/Calendar';
+// import Chat from './Pages/Chat';
 import Home from './Pages/Home';
 import Profile from './Pages/Profile';
 import Tasks from './Pages/Tasks';
@@ -40,7 +40,7 @@ function App() {
               <Layout><Home /></Layout>
             </ProtectedRoute>
           } />
-          <Route path="/calendar" element={
+          {/* <Route path="/calendar" element={
             <ProtectedRoute>
               <Layout><Calendar /></Layout>
             </ProtectedRoute>
@@ -49,7 +49,7 @@ function App() {
             <ProtectedRoute>
               <Layout><Chat /></Layout>
             </ProtectedRoute>
-          } />
+          } /> */}
           <Route path="/profile" element={
             <ProtectedRoute>
               <Layout><Profile /></Layout>

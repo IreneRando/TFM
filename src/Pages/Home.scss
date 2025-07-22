@@ -1,9 +1,9 @@
-.body{
+.body {
     margin-left: 184px;
     margin-right: 184px;
 }
 
-.button2{
+.button2 {
     width: 120px;
     background-color: var(--color-secundario);
 }
@@ -16,7 +16,7 @@
 
 .med-cards {
     text-align: center;
-   
+
     display: flex;
     flex-direction: row;
     gap: 20px;
@@ -37,34 +37,40 @@
     background-color: var(--color-fondo);
     box-shadow: 3px 3px 5px var(--color-texto-secundario);
 
-     p{
+    p {
         font-size: 16px;
     }
 
-    h4{
+    h4 {
         color: var(--color-primario);
     }
 
 }
 
-.task-summary-card{
+.task-summary-list {
     display: flex;
-    flex-direction: column;
-    width: 30%;
-    text-align: left;
-    border-radius: 5px;
-    padding: 20px;
-    padding-top: 10px;
-    padding-bottom: 10px;
-    margin-top: 20px;
-    background-color: var(--color-fondo);
-    box-shadow: 3px 3px 5px var(--color-texto-secundario);
+    gap: 1rem;
+    flex-wrap: wrap;
+    
+    .task-summary-card {
+        display: flex;
+        flex-direction: column;
+        width: 30%;
+        text-align: left;
+        border-radius: 5px;
+        padding: 20px;
+        padding-top: 10px;
+        padding-bottom: 10px;
+        margin-top: 20px;
+        background-color: var(--color-fondo);
+        box-shadow: 3px 3px 5px var(--color-texto-secundario);
 
-    p{
-        font-size: 16px;
-    }
+        p {
+            font-size: 16px;
+        }
 
-    h4{
-        color: var(--color-primario);
+        h4 {
+            color: var(--color-primario);
+        }
     }
 }
